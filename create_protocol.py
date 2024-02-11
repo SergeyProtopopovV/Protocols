@@ -1,4 +1,3 @@
-# импорт библиотеки pandas
 import pandas as pd
 import pprint as pprint
 from random import randint
