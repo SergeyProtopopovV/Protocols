@@ -5,7 +5,7 @@ import os
 import time
 from docxtpl import DocxTemplate
 from dopuska_total_station import dict_dopuska_total_station as d_t_s
-from dopuska_measuring_tape import dict_dopuska_measuring_tape as d_m_t
+from dopuska_measuring_tape_staff import dict_dopuska_measuring_tape_staff as d_m_t_s
 import change_instruments as c_i
 
 # Загружаем ваш файл в переменную `file` / вместо 'example' укажите название свого файла из текущей директории
@@ -45,7 +45,7 @@ pprint.pprint(dict_sales[9863])
 
 def total_station_ver1(k):
     doc = DocxTemplate("materials/template_total_station.docx")
-    protocol_number = str(dict_sales[k][0]) + '-' + dict_sales[k][2]
+    protocol_number = str(dict_sales[k][0]) + '-' + str(dict_sales[k][2])
     protocol_data = dict_sales[k][0]
     kk, si = dict_sales[k][5], dict_sales[k][1]
     context = {'protocol_number': protocol_number, 'protocol_data': protocol_data, 'instrument_type': dict_sales[k][1],
@@ -84,35 +84,35 @@ def total_station_ver1(k):
 
 def measuring_tape(k):
     doc = DocxTemplate("materials/template_measuring_tape.docx")
-    protocol_number = str(dict_sales[k][0]) + '-' + dict_sales[k][2]
+    protocol_number = str(dict_sales[k][0]) + '-' + str(dict_sales[k][2])
     protocol_data = dict_sales[k][0]
     kk, si = dict_sales[k][5], dict_sales[k][1]
     context = {'protocol_number': protocol_number, 'protocol_data': protocol_data, 'instrument_type': dict_sales[k][1],
                'reestr_number': dict_sales[k][4], 'serial_number': dict_sales[k][2], 'owner': dict_sales[k][3],
                'method_pover': dict_sales[k][5], 'temper': dict_sales[k][8], 'humid': dict_sales[k][9],
                'press': dict_sales[k][10], 'etalons': dict_sales[k][6], 'operator_full_name': dict_sales[k][7],
-               'metrology_param': d_m_t[kk][si][3], 'method_pover_name': d_m_t[kk][si][0],
-               'to_look': d_m_t[kk][si][1], 'to_touch': d_m_t[kk][si][2],
-               'diap1': d_m_t[kk][si][4], 'diap_tol1': d_m_t[kk][si][5],
-               'diap_meas1': round(((d_m_t[kk][si][5]) / 100 * randint(70, 90)), 1),
-               'diap2': d_m_t[kk][si][6], 'diap_tol2': d_m_t[kk][si][7],
-               'diap_meas2': round(((d_m_t[kk][si][7]) / 100 * randint(70, 90)), 1),
-               'diap3': d_m_t[kk][si][8], 'diap_tol3': d_m_t[kk][si][9],
-               'diap_meas3': round(((d_m_t[kk][si][9]) / 100 * randint(70, 90)), 1),
-               'diap4': d_m_t[kk][si][10], 'diap_tol4': d_m_t[kk][si][11],
-               'diap_meas4': round(((d_m_t[kk][si][11]) / 100 * randint(70, 90)), 1),
-               'diap5': d_m_t[kk][si][12], 'diap_tol5': d_m_t[kk][si][13],
-               'diap_meas5': round(((d_m_t[kk][si][13]) / 100 * randint(70, 90)), 1),
-               'diap6': d_m_t[kk][si][14], 'diap_tol6': d_m_t[kk][si][15],
-               'diap_meas6': round(((d_m_t[kk][si][15]) / 100 * randint(70, 90)), 1),
-               'diap7': d_m_t[kk][si][16], 'diap_tol7': d_m_t[kk][si][17],
-               'diap_meas7': round(((d_m_t[kk][si][17]) / 100 * randint(70, 90)), 1),
-               'diap8': d_m_t[kk][si][18], 'diap_tol8': d_m_t[kk][si][19],
-               'diap_meas8': round(((d_m_t[kk][si][19]) / 100 * randint(70, 90)), 1),
-               'diap9': d_m_t[kk][si][20], 'diap_tol9': d_m_t[kk][si][21],
-               'diap_meas9': round(((d_m_t[kk][si][21]) / 100 * randint(70, 90)), 1),
-               'diap10': d_m_t[kk][si][22], 'diap_tol10': d_m_t[kk][si][23],
-               'diap_meas10': round(((d_m_t[kk][si][23]) / 100 * randint(70, 90)), 1),
+               'metrology_param': d_m_t_s[kk][si][3], 'method_pover_name': d_m_t_s[kk][si][0],
+               'to_look': d_m_t_s[kk][si][1], 'to_touch': d_m_t_s[kk][si][2],
+               'diap1': d_m_t_s[kk][si][4], 'diap_tol1': d_m_t_s[kk][si][5],
+               'diap_meas1': round(((d_m_t_s[kk][si][5]) / 100 * randint(70, 90)), 1),
+               'diap2': d_m_t_s[kk][si][6], 'diap_tol2': d_m_t_s[kk][si][7],
+               'diap_meas2': round(((d_m_t_s[kk][si][7]) / 100 * randint(70, 90)), 1),
+               'diap3': d_m_t_s[kk][si][8], 'diap_tol3': d_m_t_s[kk][si][9],
+               'diap_meas3': round(((d_m_t_s[kk][si][9]) / 100 * randint(70, 90)), 1),
+               'diap4': d_m_t_s[kk][si][10], 'diap_tol4': d_m_t_s[kk][si][11],
+               'diap_meas4': round(((d_m_t_s[kk][si][11]) / 100 * randint(70, 90)), 1),
+               'diap5': d_m_t_s[kk][si][12], 'diap_tol5': d_m_t_s[kk][si][13],
+               'diap_meas5': round(((d_m_t_s[kk][si][13]) / 100 * randint(70, 90)), 1),
+               'diap6': d_m_t_s[kk][si][14], 'diap_tol6': d_m_t_s[kk][si][15],
+               'diap_meas6': round(((d_m_t_s[kk][si][15]) / 100 * randint(70, 90)), 1),
+               'diap7': d_m_t_s[kk][si][16], 'diap_tol7': d_m_t_s[kk][si][17],
+               'diap_meas7': round(((d_m_t_s[kk][si][17]) / 100 * randint(70, 90)), 1),
+               'diap8': d_m_t_s[kk][si][18], 'diap_tol8': d_m_t_s[kk][si][19],
+               'diap_meas8': round(((d_m_t_s[kk][si][19]) / 100 * randint(70, 90)), 1),
+               'diap9': d_m_t_s[kk][si][20], 'diap_tol9': d_m_t_s[kk][si][21],
+               'diap_meas9': round(((d_m_t_s[kk][si][21]) / 100 * randint(70, 90)), 1),
+               'diap10': d_m_t_s[kk][si][22], 'diap_tol10': d_m_t_s[kk][si][23],
+               'diap_meas10': round(((d_m_t_s[kk][si][23]) / 100 * randint(70, 90)), 1),
                }
     doc.render(context)
     doc.save("template_measuring_tape_final.docx")
@@ -128,16 +128,61 @@ def measuring_tape(k):
         destination.write(source.read())
 
 
+def staff(k):
+    doc = DocxTemplate("materials/template_staff.docx")
+    protocol_number = str(dict_sales[k][0]) + '-' + str(dict_sales[k][2])
+    protocol_data = dict_sales[k][0]
+    kk, si = dict_sales[k][5], dict_sales[k][1]
+    context = {'protocol_number': protocol_number, 'protocol_data': protocol_data, 'instrument_type': dict_sales[k][1],
+               'reestr_number': dict_sales[k][4], 'serial_number': dict_sales[k][2], 'owner': dict_sales[k][3],
+               'method_pover': dict_sales[k][5], 'temper': dict_sales[k][8], 'humid': dict_sales[k][9],
+               'press': dict_sales[k][10], 'etalons': dict_sales[k][6], 'operator_full_name': dict_sales[k][7],
+               'metrology_param': d_m_t_s[kk][si][3], 'method_pover_name': d_m_t_s[kk][si][0],
+               'to_look': d_m_t_s[kk][si][1], 'to_touch': d_m_t_s[kk][si][2],
+               'staff_tol1': d_m_t_s[kk][si][4],
+               'staff_meas1': round(((d_m_t_s[kk][si][4]) / 100 * randint(70, 90)), 1),
+               'staff_tol2': d_m_t_s[kk][si][5],
+               'staff_meas2': round(((d_m_t_s[kk][si][5]) / 100 * randint(70, 90)), 1),
+               'staff_tol3': d_m_t_s[kk][si][6],
+               'staff_meas3': round(((d_m_t_s[kk][si][6]) / 100 * randint(70, 90)), 1),
+               'staff_tol4': d_m_t_s[kk][si][7],
+               'staff_meas4': round(((d_m_t_s[kk][si][7]) / 100 * randint(70, 90)), 1),
+               'staff_tol5': d_m_t_s[kk][si][8],
+               'staff_meas5': round(((d_m_t_s[kk][si][8]) / 100 * randint(70, 90)), 1),
+               }
+    doc.render(context)
+    doc.save("template_staff_final.docx")
+    file_to_save = os.path.join(os.path.dirname('template_staff_final.docx'),
+                                'template_staff_final.docx')
+    path_normalized = os.path.normpath(file_to_save)
+    new_dir = os.path.join(os.path.dirname(path_normalized), 'протоколы по годам',
+                           str(dict_sales[k][0].year), f'{dict_sales[k][0].month:02d}')
+    if not os.path.exists(new_dir):
+        os.makedirs(name=new_dir)
+    new_file_name = new_dir + '/' + protocol_number + '.docx'
+    with open('template_staff_final.docx', 'rb') as source, open(new_file_name, 'wb') as destination:
+        destination.write(source.read())
+
+
 started_at = time.time()
 
 for key in dict_sales:
-    if dict_sales[key][1] in c_i.total_station_ver1_list \
-            and (dict_sales[key][5] == 'МП АПМ 15-17' or dict_sales[key][5] == 'МП АПМ 14-17'):
-        total_station_ver1(key)
-        count_files_created += 1
-    if dict_sales[key][1] in c_i.measuring_tape_list:
-        measuring_tape(key)
-        count_files_created += 1
+    try:
+        if dict_sales[key][1] in c_i.total_station_ver1_list \
+                and (dict_sales[key][5] == 'МП АПМ 15-17' or dict_sales[key][5] == 'МП АПМ 14-17'):
+            total_station_ver1(key)
+            count_files_created += 1
+            print(f'создано протоколов - {count_files_created} ключ {key}')
+        if dict_sales[key][1] in c_i.measuring_tape_list:
+            measuring_tape(key)
+            count_files_created += 1
+            print(f'создано протоколов - {count_files_created} ключ {key}')
+        if dict_sales[key][1] in c_i.staff_list:
+            staff(key)
+            count_files_created += 1
+            print(f'создано протоколов - {count_files_created} ключ {key}')
+    except Exception as exc:
+        print(f'Ошибка {exc} ключ {key}')
 
 ended_at = time.time()
 elapsed = round(ended_at - started_at, 4)
