@@ -20,10 +20,9 @@ list_sales = []
 count = 0
 for i in range(39, 40):
     try:
-        item_data = str(df1.loc[i][13].year) + str(df1.loc[i][13].month) + str(df1.loc[i][13].day)
         instrument = str(df1.loc[i][0]) + " " + str(df1.loc[i][1])
-        dict_sales[i] = (item_data, instrument, df1.loc[i][2], df1.loc[i][10], df1.loc[i][22], df1.loc[i][23],
-                         df1.loc[i][24], df1.loc[i][30], df1.loc[i][31], df1.loc[i][32], df1.loc[i][33])
+        dict_sales[i] = (df1.loc[i][13].date(), instrument, df1.loc[i][2], df1.loc[i][10], df1.loc[i][22],
+                         df1.loc[i][23], df1.loc[i][24], df1.loc[i][30], df1.loc[i][31], df1.loc[i][32], df1.loc[i][33])
         list_sales.append(df1.loc[i][23])
     except Exception as exc:
         count += 1
@@ -38,8 +37,8 @@ print(len(list_sales_separate))
 
 def total_station_ver1(k):
     doc = DocxTemplate("materials/template_total_station.docx")
-    protocol_number = dict_sales[k][0] + '-' + dict_sales[k][2]
-    protocol_data = (dict_sales[k][0])[5:7] + '.' + (dict_sales[k][0])[3:5] + '.' + (dict_sales[k][0])[0:4]
+    protocol_number = str(dict_sales[k][0]) + '-' + dict_sales[k][2]
+    protocol_data = dict_sales[k][0]
     kk, si = dict_sales[k][5], dict_sales[k][1]
     context = {'protocol_number': protocol_number, 'protocol_data': protocol_data, 'instrument_type': dict_sales[k][1],
                'reestr_number': dict_sales[k][4], 'serial_number': dict_sales[k][2], 'owner': dict_sales[k][3],
@@ -67,7 +66,7 @@ def total_station_ver1(k):
                                 'template_total_station_final.docx')
     path_normalized = os.path.normpath(file_to_save)
     new_dir = os.path.join(os.path.dirname(path_normalized), 'протоколы по годам',
-                           (dict_sales[k][0])[0:4], (dict_sales[k][0])[3:5])
+                           str(dict_sales[k][0].year), f'{dict_sales[k][0].month:02d}')
     if not os.path.exists(new_dir):
         os.makedirs(name=new_dir)
     new_file_name = new_dir + '/' + protocol_number + '.docx'
