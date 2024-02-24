@@ -6,6 +6,7 @@ import time
 from docxtpl import DocxTemplate
 from dopuska_total_station import dict_dopuska_total_station as d_t_s
 from dopuska_measuring_tape_staff import dict_dopuska_measuring_tape_staff as d_m_t_s
+from dopuska_optical_level import dict_dopuska_optical_level as d_o_l
 import change_instruments as c_i
 
 # Загружаем ваш файл в переменную `file` / вместо 'example' укажите название свого файла из текущей директории
@@ -25,6 +26,7 @@ count_empty_lines = 0
 count_records_in_dict = 0
 count_files_created = 0
 
+# for i in range(20160, 20200):
 for i in range(9863, 24410):
     count_lines += 1
     try:
@@ -38,13 +40,13 @@ for i in range(9863, 24410):
         count_empty_lines += 1
         print(f'Ошибка {exc} в строке {i}')
 
-pprint.pprint(dict_sales[9863])
+# pprint.pprint(dict_sales[20168])
 # list_sales_separate = set(list_sales)
 # pprint.pprint(list_sales_separate)
 
 
 def total_station_ver1(k):
-    doc = DocxTemplate("materials/template_total_station.docx")
+    doc = DocxTemplate("materials/template_total_station_ver1.docx")
     protocol_number = str(dict_sales[k][0]) + '-' + str(dict_sales[k][2])
     protocol_data = dict_sales[k][0]
     kk, si = dict_sales[k][5], dict_sales[k][1]
@@ -69,16 +71,16 @@ def total_station_ver1(k):
                'ang_tol3': d_t_s[kk][si][16], 'ang_meas3': round(((d_t_s[kk][si][16]) / 100 * randint(70, 90)), 1),
                'ang_tol4': d_t_s[kk][si][17], 'ang_meas4': round(((d_t_s[kk][si][17]) / 100 * randint(70, 90)), 1)}
     doc.render(context)
-    doc.save("template_total_station_final.docx")
-    file_to_save = os.path.join(os.path.dirname('template_total_station_final.docx'),
-                                'template_total_station_final.docx')
+    doc.save("template_total_station_ver1_final.docx")
+    file_to_save = os.path.join(os.path.dirname('template_total_station_ver1_final.docx'),
+                                'template_total_station_ver1_final.docx')
     path_normalized = os.path.normpath(file_to_save)
     new_dir = os.path.join(os.path.dirname(path_normalized), 'протоколы по годам',
                            str(dict_sales[k][0].year), f'{dict_sales[k][0].month:02d}')
     if not os.path.exists(new_dir):
         os.makedirs(name=new_dir)
     new_file_name = new_dir + '/' + protocol_number + '.docx'
-    with open('template_total_station_final.docx', 'rb') as source, open(new_file_name, 'wb') as destination:
+    with open('template_total_station_ver1_final.docx', 'rb') as source, open(new_file_name, 'wb') as destination:
         destination.write(source.read())
 
 
@@ -164,6 +166,38 @@ def staff(k):
         destination.write(source.read())
 
 
+def optical_level(k):
+    doc = DocxTemplate("materials/template_optical_level.docx")
+    protocol_number = str(dict_sales[k][0]) + '-' + str(dict_sales[k][2])
+    protocol_data = dict_sales[k][0]
+    kk, si = dict_sales[k][5], dict_sales[k][1]
+    context = {'protocol_number': protocol_number, 'protocol_data': protocol_data, 'instrument_type': dict_sales[k][1],
+               'reestr_number': dict_sales[k][4], 'serial_number': dict_sales[k][2], 'owner': dict_sales[k][3],
+               'method_pover': dict_sales[k][5], 'temper': dict_sales[k][8], 'humid': dict_sales[k][9],
+               'press': dict_sales[k][10], 'etalons': dict_sales[k][6], 'operator_full_name': dict_sales[k][7],
+               'metrology_param': d_o_l[kk][si][3], 'method_pover_name': d_o_l[kk][si][0],
+               'to_look': d_o_l[kk][si][1], 'to_touch': d_o_l[kk][si][2],
+               'tol1': d_o_l[kk][si][4], 'meas1': round(((d_o_l[kk][si][4]) + (randint(0, 11) - 11) / 10), 1),
+               'tol2': d_o_l[kk][si][5], 'meas2': randint(15, 20), 'meas3': randint(15, 20),
+               'tol3': d_o_l[kk][si][6], 'meas4': round(((d_o_l[kk][si][6]) / 100 * randint(80, 100)), 1),
+               'meas5': randint(3, 10), 'meas6': round((randint(995, 1006) / 10), 1),
+               'tol4': d_o_l[kk][si][7], 'meas7': round(((d_o_l[kk][si][7]) / 100 * randint(90, 100)), 2),
+               'tol5': d_o_l[kk][si][8], 'meas8': round(((d_o_l[kk][si][8]) / 100 * randint(80, 100)), 1),
+               }
+    doc.render(context)
+    doc.save("template_optical_level_final.docx")
+    file_to_save = os.path.join(os.path.dirname('template_optical_level_final.docx'),
+                                'template_optical_level_final.docx')
+    path_normalized = os.path.normpath(file_to_save)
+    new_dir = os.path.join(os.path.dirname(path_normalized), 'протоколы по годам',
+                           str(dict_sales[k][0].year), f'{dict_sales[k][0].month:02d}')
+    if not os.path.exists(new_dir):
+        os.makedirs(name=new_dir)
+    new_file_name = new_dir + '/' + protocol_number + '.docx'
+    with open('template_optical_level_final.docx', 'rb') as source, open(new_file_name, 'wb') as destination:
+        destination.write(source.read())
+
+
 started_at = time.time()
 
 for key in dict_sales:
@@ -179,6 +213,10 @@ for key in dict_sales:
             print(f'создано протоколов - {count_files_created} ключ {key}')
         if dict_sales[key][1] in c_i.staff_list:
             staff(key)
+            count_files_created += 1
+            print(f'создано протоколов - {count_files_created} ключ {key}')
+        if dict_sales[key][1] in c_i.optical_level_list:
+            optical_level(key)
             count_files_created += 1
             print(f'создано протоколов - {count_files_created} ключ {key}')
     except Exception as exc:

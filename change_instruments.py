@@ -21,3 +21,6 @@ measuring_tape_list = ['Рулетки UM3M', 'Рулетки UM5M', 'Рулет
                        ]
 
 staff_list = ['Рейка шашечная VEGA TS3M', 'Рейка шашечная VEGA TS4M', 'Рейка шашечная VEGA TS5M']
+
+optical_level_list = ['Нивелир VEGA L32C', 'Нивелир VEGA L30', 'Нивелир VEGA L20', 'Нивелир VEGA L24', 'Нивелир B30A',
+                      'Нивелир AT-B3A', 'Нивелир B40A', 'Нивелир AT-B4A']
