@@ -4,6 +4,7 @@ from random import randint
 import os
 from docxtpl import DocxTemplate
 from dopuska_total_station import dict_dopuska as dd
+import change_instruments as c_i
 
 # Загружаем ваш файл в переменную `file` / вместо 'example' укажите название свого файла из текущей директории
 file = 'materials/POV-ГСИ.XLS'
@@ -17,22 +18,26 @@ df1 = xl.parse('Продажа')
 dict_sales = {}
 list_sales = []
 
-count = 0
-for i in range(39, 40):
+count_lines = 0
+count_empty_lines = 0
+count_records_in_dict = 0
+count_files_created = 0
+
+for i in range(9863, 24410):
+    count_lines += 1
     try:
         instrument = str(df1.loc[i][0]) + " " + str(df1.loc[i][1])
         dict_sales[i] = (df1.loc[i][13].date(), instrument, df1.loc[i][2], df1.loc[i][10], df1.loc[i][22],
                          df1.loc[i][23], df1.loc[i][24], df1.loc[i][30], df1.loc[i][31], df1.loc[i][32], df1.loc[i][33])
         list_sales.append(df1.loc[i][23])
+        count_records_in_dict += 1
     except Exception as exc:
-        count += 1
+        count_empty_lines += 1
         print(f'Ошибка {exc} в строке {i}')
 
-print(f'пустых строк - {count}')
-pprint.pprint(dict_sales)
-list_sales_separate = set(list_sales)
-pprint.pprint(list_sales_separate)
-print(len(list_sales_separate))
+pprint.pprint(dict_sales[9863])
+# list_sales_separate = set(list_sales)
+# pprint.pprint(list_sales_separate)
 
 
 def total_station_ver1(k):
@@ -75,4 +80,12 @@ def total_station_ver1(k):
 
 
 for key in dict_sales:
-    total_station_ver1(key)
+    if dict_sales[key][1] in c_i.total_station_ver1_list \
+            and (dict_sales[key][5] == 'МП АПМ 15-17' or dict_sales[key][5] == 'МП АПМ 14-17'):
+        total_station_ver1(key)
+        count_files_created += 1
+
+print(f'обработано строк в файле - {count_lines}')
+print(f'пустых строк в файле - {count_empty_lines}')
+print(f'создано записей в словаре - {count_records_in_dict}')
+print(f'создано протоколов - {count_files_created}')
