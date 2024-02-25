@@ -9,7 +9,7 @@ from dopuska_measuring_tape_staff import dict_dopuska_measuring_tape_staff as d_
 from dopuska_optical_level import dict_dopuska_optical_level as d_o_l
 import change_instruments as c_i
 
-# Загружаем ваш файл в переменную `file` / вместо 'example' укажите название свого файла из текущей директории
+# Загружаем ваш файл в переменную `file` / вместо 'example' укажите название своего файла из текущей директории
 file = 'materials/POV-ГСИ.XLS'
 # Загружаем spreadsheet в объект pandas
 xl = pd.ExcelFile(file)
@@ -26,7 +26,7 @@ count_empty_lines = 0
 count_records_in_dict = 0
 count_files_created = 0
 
-# for i in range(20160, 20200):
+# for i in range(16483, 16496):
 for i in range(9863, 24410):
     count_lines += 1
     try:
@@ -48,6 +48,7 @@ for i in range(9863, 24410):
 def total_station_ver1(k):
     doc = DocxTemplate("materials/template_total_station_ver1.docx")
     protocol_number = str(dict_sales[k][0]) + '-' + str(dict_sales[k][2])
+    protocol_name = str(dict_sales[k][0]) + '-' + dict_sales[k][1] + '-' + str(dict_sales[k][2])
     protocol_data = dict_sales[k][0]
     kk, si = dict_sales[k][5], dict_sales[k][1]
     context = {'protocol_number': protocol_number, 'protocol_data': protocol_data, 'instrument_type': dict_sales[k][1],
@@ -79,7 +80,7 @@ def total_station_ver1(k):
                            str(dict_sales[k][0].year), f'{dict_sales[k][0].month:02d}')
     if not os.path.exists(new_dir):
         os.makedirs(name=new_dir)
-    new_file_name = new_dir + '/' + protocol_number + '.docx'
+    new_file_name = new_dir + '/' + protocol_name + '.docx'
     with open('template_total_station_ver1_final.docx', 'rb') as source, open(new_file_name, 'wb') as destination:
         destination.write(source.read())
 
@@ -87,6 +88,7 @@ def total_station_ver1(k):
 def measuring_tape(k):
     doc = DocxTemplate("materials/template_measuring_tape.docx")
     protocol_number = str(dict_sales[k][0]) + '-' + str(dict_sales[k][2])
+    protocol_name = str(dict_sales[k][0]) + '-' + dict_sales[k][1].replace('/', '_') + '-' + str(dict_sales[k][2])
     protocol_data = dict_sales[k][0]
     kk, si = dict_sales[k][5], dict_sales[k][1]
     context = {'protocol_number': protocol_number, 'protocol_data': protocol_data, 'instrument_type': dict_sales[k][1],
@@ -125,7 +127,7 @@ def measuring_tape(k):
                            str(dict_sales[k][0].year), f'{dict_sales[k][0].month:02d}')
     if not os.path.exists(new_dir):
         os.makedirs(name=new_dir)
-    new_file_name = new_dir + '/' + protocol_number + '.docx'
+    new_file_name = new_dir + '/' + protocol_name + '.docx'
     with open('template_measuring_tape_final.docx', 'rb') as source, open(new_file_name, 'wb') as destination:
         destination.write(source.read())
 
@@ -133,6 +135,7 @@ def measuring_tape(k):
 def staff(k):
     doc = DocxTemplate("materials/template_staff.docx")
     protocol_number = str(dict_sales[k][0]) + '-' + str(dict_sales[k][2])
+    protocol_name = str(dict_sales[k][0]) + '-' + dict_sales[k][1] + '-' + str(dict_sales[k][2])
     protocol_data = dict_sales[k][0]
     kk, si = dict_sales[k][5], dict_sales[k][1]
     context = {'protocol_number': protocol_number, 'protocol_data': protocol_data, 'instrument_type': dict_sales[k][1],
@@ -161,7 +164,7 @@ def staff(k):
                            str(dict_sales[k][0].year), f'{dict_sales[k][0].month:02d}')
     if not os.path.exists(new_dir):
         os.makedirs(name=new_dir)
-    new_file_name = new_dir + '/' + protocol_number + '.docx'
+    new_file_name = new_dir + '/' + protocol_name + '.docx'
     with open('template_staff_final.docx', 'rb') as source, open(new_file_name, 'wb') as destination:
         destination.write(source.read())
 
@@ -169,6 +172,7 @@ def staff(k):
 def optical_level(k):
     doc = DocxTemplate("materials/template_optical_level.docx")
     protocol_number = str(dict_sales[k][0]) + '-' + str(dict_sales[k][2])
+    protocol_name = str(dict_sales[k][0]) + '-' + dict_sales[k][1] + '-' + str(dict_sales[k][2])
     protocol_data = dict_sales[k][0]
     kk, si = dict_sales[k][5], dict_sales[k][1]
     context = {'protocol_number': protocol_number, 'protocol_data': protocol_data, 'instrument_type': dict_sales[k][1],
@@ -193,7 +197,7 @@ def optical_level(k):
                            str(dict_sales[k][0].year), f'{dict_sales[k][0].month:02d}')
     if not os.path.exists(new_dir):
         os.makedirs(name=new_dir)
-    new_file_name = new_dir + '/' + protocol_number + '.docx'
+    new_file_name = new_dir + '/' + protocol_name + '.docx'
     with open('template_optical_level_final.docx', 'rb') as source, open(new_file_name, 'wb') as destination:
         destination.write(source.read())
 
@@ -203,7 +207,8 @@ started_at = time.time()
 for key in dict_sales:
     try:
         if dict_sales[key][1] in c_i.total_station_ver1_list \
-                and (dict_sales[key][5] == 'МП АПМ 15-17' or dict_sales[key][5] == 'МП АПМ 14-17'):
+                and (dict_sales[key][5] == 'МП АПМ 15-17' or dict_sales[key][5] == 'МП АПМ 14-17'
+                     or dict_sales[key][5] == 'МП АПМ 63-17'):
             total_station_ver1(key)
             count_files_created += 1
             print(f'создано протоколов - {count_files_created} ключ {key}')
