@@ -26,7 +26,7 @@ count_empty_lines = 0
 count_records_in_dict = 0
 count_files_created = 0
 
-# for i in range(16483, 16496):
+# for i in range(26200, 26250):
 for i in range(9863, 24410):
     count_lines += 1
     try:
@@ -38,7 +38,7 @@ for i in range(9863, 24410):
         count_records_in_dict += 1
     except Exception as exc:
         count_empty_lines += 1
-        print(f'Ошибка {exc} в строке {i}')
+        print(f'Ошибка {exc} пустая строка {i + 2}')
 
 # pprint.pprint(dict_sales[20168])
 # list_sales_separate = set(list_sales)
@@ -208,22 +208,21 @@ for key in dict_sales:
     try:
         if dict_sales[key][1] in c_i.total_station_ver1_list \
                 and (dict_sales[key][5] == 'МП АПМ 15-17' or dict_sales[key][5] == 'МП АПМ 14-17'
-                     or dict_sales[key][5] == 'МП АПМ 63-17'):
+                     or dict_sales[key][5] == 'МП АПМ 63-17' or dict_sales[key][5] == 'МП 2511-0011-2021'
+                     or dict_sales[key][5] == 'МП 2511-0007-2021'):
             total_station_ver1(key)
             count_files_created += 1
-            print(f'создано протоколов - {count_files_created} ключ {key}')
-        if dict_sales[key][1] in c_i.measuring_tape_list:
+        elif dict_sales[key][1] in c_i.measuring_tape_list:
             measuring_tape(key)
             count_files_created += 1
-            print(f'создано протоколов - {count_files_created} ключ {key}')
-        if dict_sales[key][1] in c_i.staff_list:
+        elif dict_sales[key][1] in c_i.staff_list:
             staff(key)
             count_files_created += 1
-            print(f'создано протоколов - {count_files_created} ключ {key}')
-        if dict_sales[key][1] in c_i.optical_level_list:
+        elif dict_sales[key][1] in c_i.optical_level_list:
             optical_level(key)
             count_files_created += 1
-            print(f'создано протоколов - {count_files_created} ключ {key}')
+        else:
+            print(f'нет протокола для ({dict_sales[key][1]}), методика ({dict_sales[key][5]}), ячейка ({key + 2})')
     except Exception as exc:
         print(f'Ошибка {exc} ключ {key}')
 
