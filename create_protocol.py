@@ -27,15 +27,15 @@ count_empty_lines = 0
 count_records_in_dict = 0
 count_files_created = 0
 
-for i in range(26200, 26250):
-# for i in range(9863, 24410):
+# for i in range(26200, 26250):
+for i in range(9863, 24410):
     count_lines += 1
     try:
         instrument = str(df1.loc[i][0]) + " " + str(df1.loc[i][1])
         instrument = " ".join(instrument.split())
-        instrument_correct(instrument)
+        instrument = instrument_correct(instrument=instrument)
         mp = " ".join(str(df1.loc[i][23]).split())
-        etalons = df1.loc[i][24] + ", " + str(df1.loc[i][35])
+        etalons = str(df1.loc[i][24]) + ", " + str(df1.loc[i][35])
         dict_sales[i] = (df1.loc[i][13].date(), instrument, df1.loc[i][2], df1.loc[i][10], df1.loc[i][22],
                          mp, etalons, df1.loc[i][30], df1.loc[i][31], df1.loc[i][32], df1.loc[i][33])
         list_sales.append(df1.loc[i][23])
@@ -44,7 +44,7 @@ for i in range(26200, 26250):
         count_empty_lines += 1
         print(f'Ошибка {exc} пустая строка {i + 2}')
 
-pprint.pprint(dict_sales[26230])
+# pprint.pprint(dict_sales[26230])
 # list_sales_separate = set(list_sales)
 # pprint.pprint(list_sales_separate)
 
