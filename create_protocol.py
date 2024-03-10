@@ -4,6 +4,7 @@ from random import randint
 import os
 import time
 from docxtpl import DocxTemplate
+from instrument_correction import instrument_correct
 from dopuska_total_station import dict_dopuska_total_station as d_t_s
 from dopuska_measuring_tape_staff import dict_dopuska_measuring_tape_staff as d_m_t_s
 from dopuska_optical_level import dict_dopuska_optical_level as d_o_l
@@ -26,21 +27,24 @@ count_empty_lines = 0
 count_records_in_dict = 0
 count_files_created = 0
 
-# for i in range(26200, 26250):
-for i in range(9863, 24410):
+for i in range(26200, 26250):
+# for i in range(9863, 24410):
     count_lines += 1
     try:
         instrument = str(df1.loc[i][0]) + " " + str(df1.loc[i][1])
         instrument = " ".join(instrument.split())
+        instrument_correct(instrument)
+        mp = " ".join(str(df1.loc[i][23]).split())
+        etalons = df1.loc[i][24] + ", " + str(df1.loc[i][35])
         dict_sales[i] = (df1.loc[i][13].date(), instrument, df1.loc[i][2], df1.loc[i][10], df1.loc[i][22],
-                         df1.loc[i][23], df1.loc[i][24], df1.loc[i][30], df1.loc[i][31], df1.loc[i][32], df1.loc[i][33])
+                         mp, etalons, df1.loc[i][30], df1.loc[i][31], df1.loc[i][32], df1.loc[i][33])
         list_sales.append(df1.loc[i][23])
         count_records_in_dict += 1
     except Exception as exc:
         count_empty_lines += 1
         print(f'Ошибка {exc} пустая строка {i + 2}')
 
-# pprint.pprint(dict_sales[20168])
+pprint.pprint(dict_sales[26230])
 # list_sales_separate = set(list_sales)
 # pprint.pprint(list_sales_separate)
 
