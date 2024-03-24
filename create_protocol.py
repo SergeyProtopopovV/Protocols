@@ -8,6 +8,7 @@ from instrument_correction import instrument_correct
 from dopuska_total_station import dict_dopuska_total_station as d_t_s
 from dopuska_measuring_tape_staff import dict_dopuska_measuring_tape_staff as d_m_t_s
 from dopuska_optical_level import dict_dopuska_optical_level as d_o_l
+from dopuska_gnss_receiver import dict_dopuska_GNSS_receiver as d_g_r
 import change_instruments as c_i
 
 # Загружаем ваш файл в переменную `file` / вместо 'example' укажите название своего файла из текущей директории
@@ -27,7 +28,7 @@ count_empty_lines = 0
 count_records_in_dict = 0
 count_files_created = 0
 
-# for i in range(26200, 26250):
+# for i in range(9900, 9930):
 for i in range(9863, 24410):
     count_lines += 1
     try:
@@ -86,6 +87,44 @@ def total_station_ver1(k):
         os.makedirs(name=new_dir)
     new_file_name = new_dir + '/' + protocol_name + '.docx'
     with open('template_total_station_ver1_final.docx', 'rb') as source, open(new_file_name, 'wb') as destination:
+        destination.write(source.read())
+
+
+def gnss_receiver(k):
+    doc = DocxTemplate("materials/template_GNSS_receiver.docx")
+    protocol_number = str(dict_sales[k][0]) + '-' + str(dict_sales[k][2])
+    protocol_name = str(dict_sales[k][0]) + '-' + dict_sales[k][1] + '-' + str(dict_sales[k][2])
+    protocol_data = dict_sales[k][0]
+    kk, si = dict_sales[k][5], dict_sales[k][1]
+    context = {'protocol_number': protocol_number, 'protocol_data': protocol_data, 'instrument_type': dict_sales[k][1],
+               'reestr_number': dict_sales[k][4], 'serial_number': dict_sales[k][2], 'owner': dict_sales[k][3],
+               'method_pover': dict_sales[k][5], 'temper': dict_sales[k][8], 'humid': dict_sales[k][9],
+               'press': dict_sales[k][10], 'etalons': dict_sales[k][6], 'operator_full_name': dict_sales[k][7],
+               'metrology_param': d_g_r[kk][si][3], 'method_pover_name': d_g_r[kk][si][0],
+               'to_look': d_g_r[kk][si][1], 'to_touch': d_g_r[kk][si][2],
+               'st_tol1': d_g_r[kk][si][4], 'st_meas1': round(((d_g_r[kk][si][4]) / 100 * randint(70, 90)), 1),
+               'st_tol2': d_g_r[kk][si][5], 'st_meas2': round(((d_g_r[kk][si][5]) / 100 * randint(70, 90)), 1),
+               'st_tol3': d_g_r[kk][si][6], 'st_meas3': round(((d_g_r[kk][si][6]) / 100 * randint(70, 90)), 1),
+               'st_tol4': d_g_r[kk][si][7], 'st_meas4': round(((d_g_r[kk][si][7]) / 100 * randint(70, 90)), 1),
+               'kin_tol1': d_g_r[kk][si][8], 'kin_meas1': round(((d_g_r[kk][si][8]) / 100 * randint(70, 90)), 1),
+               'kin_tol2': d_g_r[kk][si][9], 'kin_meas2': round(((d_g_r[kk][si][9]) / 100 * randint(70, 90)), 1),
+               'kin_tol3': d_g_r[kk][si][10], 'kin_meas3': round(((d_g_r[kk][si][10]) / 100 * randint(70, 90)), 1),
+               'kin_tol4': d_g_r[kk][si][11], 'kin_meas4': round(((d_g_r[kk][si][11]) / 100 * randint(70, 90)), 1),
+               'dif_tol1': d_g_r[kk][si][12], 'dif_meas1': round(((d_g_r[kk][si][12]) / 100 * randint(70, 90)), -1),
+               'dif_tol2': d_g_r[kk][si][13], 'dif_meas2': round(((d_g_r[kk][si][13]) / 100 * randint(70, 90)), -1),
+               'dif_tol3': d_g_r[kk][si][14], 'dif_meas3': round(((d_g_r[kk][si][14]) / 100 * randint(70, 90)), -1),
+               'dif_tol4': d_g_r[kk][si][15], 'dif_meas4': round(((d_g_r[kk][si][15]) / 100 * randint(70, 90)), -1)}
+    doc.render(context)
+    doc.save("template_GNSS_receiver_final.docx")
+    file_to_save = os.path.join(os.path.dirname('template_GNSS_receiver_final.docx'),
+                                'template_GNSS_receiver_final.docx')
+    path_normalized = os.path.normpath(file_to_save)
+    new_dir = os.path.join(os.path.dirname(path_normalized), 'протоколы по годам',
+                           str(dict_sales[k][0].year), f'{dict_sales[k][0].month:02d}')
+    if not os.path.exists(new_dir):
+        os.makedirs(name=new_dir)
+    new_file_name = new_dir + '/' + protocol_name + '.docx'
+    with open('template_GNSS_receiver_final.docx', 'rb') as source, open(new_file_name, 'wb') as destination:
         destination.write(source.read())
 
 
@@ -216,6 +255,9 @@ for key in dict_sales:
                      or dict_sales[key][5] == 'МП 2511-0007-2021'):
             total_station_ver1(key)
             count_files_created += 1
+        elif dict_sales[key][1] in c_i.gnss_receiver_list:
+            gnss_receiver(key)
+            count_files_created += 1
         elif dict_sales[key][1] in c_i.measuring_tape_list:
             measuring_tape(key)
             count_files_created += 1
@@ -228,7 +270,7 @@ for key in dict_sales:
         else:
             print(f'нет протокола для ({dict_sales[key][1]}), методика ({dict_sales[key][5]}), ячейка ({key + 2})')
     except Exception as exc:
-        print(f'Ошибка {exc} ключ {key}')
+        print(f'Ошибка {exc} ключ {key} ---- {dict_sales[key][1]}')
 
 ended_at = time.time()
 elapsed = round(ended_at - started_at, 4)
