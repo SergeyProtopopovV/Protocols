@@ -1,6 +1,6 @@
 def instrument_correct(instrument):
-    instrument = instrument.replace('Тахеометры электронные', 'Тахеометр электронный')
     instrument = instrument.replace('Тахеометры электронные TOPCON', 'Тахеометр электронный')
+    instrument = instrument.replace('Тахеометры электронные', 'Тахеометр электронный')
     instrument = instrument.replace('Рулетки', 'Рулетка')
     instrument = instrument.replace('TL5M', 'TL5M')
     instrument = instrument.replace('СС10M', 'CC10M')
@@ -22,4 +22,6 @@ def instrument_correct(instrument):
     instrument = instrument.replace(' SOKKIA ', ' ')
     instrument = instrument.replace('Аппаратура геодезическая спутниковая SinoGNSS T300 Plus',
                                     'Аппаратура геодезическая спутниковая SinoGNSS T300 plus')
+    instrument = instrument.replace('GNSS-приемники спутниковые геодезические многочастотные',
+                                    'Аппаратура геодезическая спутниковая')
     return instrument
