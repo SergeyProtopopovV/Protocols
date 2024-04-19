@@ -32,4 +32,7 @@ def instrument_correct(instrument):
     instrument = instrument.replace('GPS приемник', 'Аппаратура геодезическая спутниковая')
     instrument = instrument.replace('GNSS-станции опорные спутниковые геодезические многочастотные',
                                     'Аппаратура геодезическая спутниковая')
+    instrument = instrument.replace('Leica DISTO', 'DISTO')
+    instrument = instrument.replace('Дальномер', 'Дальномер лазерный')
+    instrument = instrument.replace('Дальномер лазерный лазерный', 'Дальномер лазерный')
     return instrument

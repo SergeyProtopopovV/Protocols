@@ -9,6 +9,7 @@ from dopuska_total_station import dict_dopuska_total_station as d_t_s
 from dopuska_measuring_tape_staff import dict_dopuska_measuring_tape_staff as d_m_t_s
 from dopuska_optical_level import dict_dopuska_optical_level as d_o_l
 from dopuska_gnss_receiver import dict_dopuska_GNSS_receiver as d_g_r
+from dopuska_distance_meter import dict_dopuska_distance_meter as d_d_m
 import change_instruments as c_i
 
 # Загружаем ваш файл в переменную `file` / вместо 'example' укажите название своего файла из текущей директории
@@ -28,8 +29,8 @@ count_empty_lines = 0
 count_records_in_dict = 0
 count_files_created = 0
 
-# for i in range(17700, 17900):
-for i in range(9863, 24410):
+for i in range(9000, 11000):
+# for i in range(9863, 26400):
     count_lines += 1
     try:
         instrument = str(df1.loc[i][0]) + " " + str(df1.loc[i][1])
@@ -246,6 +247,37 @@ def optical_level(k):
         destination.write(source.read())
 
 
+def distance_meter(k):
+    doc = DocxTemplate("materials/template_distance_meter.docx")
+    protocol_number = str(dict_sales[k][0]) + '-' + str(dict_sales[k][2])
+    protocol_name = str(dict_sales[k][0]) + '-' + dict_sales[k][1] + '-' + str(dict_sales[k][2])
+    protocol_data = dict_sales[k][0]
+    kk, si = dict_sales[k][5], dict_sales[k][1]
+    context = {'protocol_number': protocol_number, 'protocol_data': protocol_data, 'instrument_type': dict_sales[k][1],
+               'reestr_number': dict_sales[k][4], 'serial_number': dict_sales[k][2], 'owner': dict_sales[k][3],
+               'method_pover': dict_sales[k][5], 'temper': dict_sales[k][8], 'humid': dict_sales[k][9],
+               'press': dict_sales[k][10], 'etalons': dict_sales[k][6], 'operator_full_name': dict_sales[k][7],
+               'metrology_param': d_d_m[kk][si][3], 'method_pover_name': d_d_m[kk][si][0],
+               'to_look': d_d_m[kk][si][1], 'to_touch': d_d_m[kk][si][2],
+               'tol1': d_d_m[kk][si][4], 'meas1': round(((d_d_m[kk][si][4]) / 100 * randint(80, 100)), 1),
+               'tol2': d_d_m[kk][si][5], 'meas2': round(((d_d_m[kk][si][5]) / 100 * randint(80, 100)), 1),
+               'tol3': d_d_m[kk][si][6], 'meas3': round(((d_d_m[kk][si][6]) / 100 * randint(80, 100)), 1),
+               'tol4': d_d_m[kk][si][7], 'meas4': round(((d_d_m[kk][si][7]) / 100 * randint(20, 50)), 2),
+               'tol5': d_d_m[kk][si][8], 'meas5': round(((d_d_m[kk][si][8]) / 100 * randint(20, 50)), 2)}
+    doc.render(context)
+    doc.save("template_distance_meter_final.docx")
+    file_to_save = os.path.join(os.path.dirname('template_distance_meter_final.docx'),
+                                'template_distance_meter_final.docx')
+    path_normalized = os.path.normpath(file_to_save)
+    new_dir = os.path.join(os.path.dirname(path_normalized), 'протоколы по годам',
+                           str(dict_sales[k][0].year), f'{dict_sales[k][0].month:02d}')
+    if not os.path.exists(new_dir):
+        os.makedirs(name=new_dir)
+    new_file_name = new_dir + '/' + protocol_name + '.docx'
+    with open('template_distance_meter_final.docx', 'rb') as source, open(new_file_name, 'wb') as destination:
+        destination.write(source.read())
+
+
 started_at = time.time()
 
 for key in dict_sales:
@@ -267,6 +299,9 @@ for key in dict_sales:
             count_files_created += 1
         elif dict_sales[key][1] in c_i.optical_level_list:
             optical_level(key)
+            count_files_created += 1
+        elif dict_sales[key][1] in c_i.distance_meter_list:
+            distance_meter(key)
             count_files_created += 1
         else:
             print(f'нет протокола для ({dict_sales[key][1]}), методика ({dict_sales[key][5]}), ячейка ({key + 2})')
