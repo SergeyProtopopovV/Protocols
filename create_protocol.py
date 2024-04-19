@@ -28,7 +28,7 @@ count_empty_lines = 0
 count_records_in_dict = 0
 count_files_created = 0
 
-# for i in range(9900, 9930):
+# for i in range(17700, 17900):
 for i in range(9863, 24410):
     count_lines += 1
     try:
@@ -36,7 +36,8 @@ for i in range(9863, 24410):
         instrument = " ".join(instrument.split())
         instrument = instrument_correct(instrument=instrument)
         mp = " ".join(str(df1.loc[i][23]).split())
-        etalons = str(df1.loc[i][24]) + ", " + str(df1.loc[i][35])
+        etalons = str(df1.loc[i][24]) + ", " + str(df1.loc[i][35]) if str(df1.loc[i][35]) != 'nan' \
+            else str(df1.loc[i][24])
         dict_sales[i] = (df1.loc[i][13].date(), instrument, df1.loc[i][2], df1.loc[i][10], df1.loc[i][22],
                          mp, etalons, df1.loc[i][30], df1.loc[i][31], df1.loc[i][32], df1.loc[i][33])
         list_sales.append(df1.loc[i][23])

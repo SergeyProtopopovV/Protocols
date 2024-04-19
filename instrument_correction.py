@@ -19,9 +19,17 @@ def instrument_correct(instrument):
     instrument = instrument.replace('GPS-приемник', 'Аппаратура геодезическая спутниковая')
     instrument = instrument.replace('Аппаратура спутниковая геодезическая', 'Аппаратура геодезическая спутниковая')
     instrument = instrument.replace(' TOPCON ', ' ')
+    instrument = instrument.replace(' Topcon ', ' ')
     instrument = instrument.replace(' SOKKIA ', ' ')
+    instrument = instrument.replace(' изм ', ' ')
     instrument = instrument.replace('Аппаратура геодезическая спутниковая SinoGNSS T300 Plus',
                                     'Аппаратура геодезическая спутниковая SinoGNSS T300 plus')
     instrument = instrument.replace('GNSS-приемники спутниковые геодезические многочастотные',
+                                    'Аппаратура геодезическая спутниковая')
+    instrument = instrument.replace('SinoGNSS SinoGNSS', 'SinoGNSS')
+    instrument = instrument.replace('спутниковая USA', 'спутниковая')
+    instrument = instrument.replace('HIPER', 'Hiper')
+    instrument = instrument.replace('GPS приемник', 'Аппаратура геодезическая спутниковая')
+    instrument = instrument.replace('GNSS-станции опорные спутниковые геодезические многочастотные',
                                     'Аппаратура геодезическая спутниковая')
     return instrument
